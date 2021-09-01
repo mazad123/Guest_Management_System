@@ -28,6 +28,8 @@ app.get("/", (req, res) => {
 
 require('./app/routes/room.routes')(app); 
 require('./app/routes/admin.routes')(app); 
+require('./app/routes/manager.routes')(app); 
+
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
