@@ -21,5 +21,7 @@ db.sequelize = sequelize;
 // db.hotels = require("./hotel.model")(sequelize,Sequelize);
 db.admins = require("./admin.model")(sequelize,Sequelize);
 db.managers = require("./manager.model")(sequelize,Sequelize);
+db.guests = require("./guest.model")(sequelize,Sequelize);
+db.bookings = require("./booking.model")(sequelize,Sequelize);
 db.rooms = require("./room.model")(sequelize,Sequelize);
 module.exports = db;

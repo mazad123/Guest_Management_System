@@ -13,7 +13,7 @@ exports.create = (req, res) => {
 	  };
 	  console.log(room);
 	
-	  // Save Tutorial in the database
+	  // Save Room in the database
 	  Room.create(room)
 		.then(data => {
 	      console.log(data);	
@@ -22,13 +22,13 @@ exports.create = (req, res) => {
 		.catch(err => {
 		  res.status(500).send({
 			message:
-			  err.message || "Some error occurred while creating the Tutorial."
+			  err.message || "Some error occurred while creating the room."
 		  });
 		});
 };
 
 
-// // Retrieve all Tutorials from the database.
+// Retrieve all Rooms from the database.
 exports.findAll = (req, res) => {
 	Room.findAll()
 	  .then(data => {
@@ -38,7 +38,7 @@ exports.findAll = (req, res) => {
 	  .catch(err => {
 		res.status(500).send({
 		  message:
-			err.message || "Some error occurred while retrieving tutorials."
+			err.message || "Some error occurred while retrieving rooms."
 		});
 	  });
   };
@@ -57,7 +57,7 @@ exports.findOne = (req, res) => {
 	  })
 	  .catch(err => {
 		res.status(500).send({
-		  message: "Error retrieving Tutorial with id=" + id
+		  message: "Error retrieving Room with id=" + id
 		});
 	  });
   };
@@ -87,7 +87,7 @@ exports.update = (req, res) => {
 	  })
 	  .catch(err => {
 		res.status(500).send({
-		  message: "Error updating Tutorial with id=" + id
+		  message: "Error updating Room with id=" + id
 		});
 	  });
 };

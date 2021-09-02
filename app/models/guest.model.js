@@ -1,27 +1,27 @@
 module.exports = (sequelize, Sequelize) => {
-	const Manager = sequelize.define('manager', {
-	  manager_name: {
+	const Guest = sequelize.define('guest', {
+	  guest_name: {
 		type: Sequelize.STRING,
         allowNull: false
 	  },
-      manager_email: {
+      guest_email: {
 		type: Sequelize.STRING,
         allowNull: false
 	  },
-      manager_password: {
+      guest_password: {
 		type: Sequelize.STRING,
         allowNull: false
 	  },
-      manager_phone:{
+      guest_phone:{
         type: Sequelize.BIGINT,
         allowNull: false
       },
-	  manager_address: {
+	  guest_address: {
 		  type: Sequelize.STRING,
 		  allowNull: false, 
-          defaultValue: 'Mohali'
+          defaultValue: 'Goa'
 	  },
 	});
 	
-	return Manager;
+	return Guest;
 }
