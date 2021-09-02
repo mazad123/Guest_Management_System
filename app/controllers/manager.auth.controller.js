@@ -1,6 +1,8 @@
 const db = require("../models");
 const Manager = db.managers;
 const bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
+const authConfig = require('../config/auth.config');
 
 
 // Create and Save a new Manager
@@ -31,4 +33,31 @@ exports.create =  async(req, res) => {
 			  err.message || "Some error occurred while login Manager."
 		  });
 		});
+};
+
+
+exports.login = async (req, res) => {
+     
+	const {manager_email, manager_password} = req.body;
+	const user = await Manager.findOne({ where: { manager_email: manager_email } });
+	// const user = await Admin.findOne({email:email});
+	if(!user){
+		res.status(400).send({message:"User Not Found"});
+	}
+	else{
+		const isValid = await bcrypt.compare(manager_password, user.manager_password)
+		if(isValid){
+		   const accessToken = await jwt.sign({id:user.id,manager_email:user.manager_email}, authConfig.secret_key);
+		   console.log(manager_email,manager_password,accessToken);
+		   res.json({
+			  manager_email,
+			  manager_password,
+			  accessToken,
+		  })
+		}
+		else{
+		   res.status(400).send({message:"Invalid credentials"});
+		}
+	}
+
 };
