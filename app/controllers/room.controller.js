@@ -29,7 +29,7 @@ exports.create = (req, res) => {
 
 
 // Retrieve all Rooms from the database.
-exports.findAll = (req, res) => {
+exports.findAllRoom = (req, res) => {
 	Room.findAll()
 	  .then(data => {
 		console.log("data is:",data);
@@ -43,7 +43,22 @@ exports.findAll = (req, res) => {
 	  });
   };
 
-// Find a single Room with an id
+// Retrieve only available Rooms from the database.
+exports.findAllRoomWithCondition = (req, res) => {
+	Room.findAll({ where: { room_Status: 'Available' } })
+	  .then(data => {
+		console.log("data is:",data);
+		res.send(data);
+	  })
+	  .catch(err => {
+		res.status(500).send({
+		  message:
+			err.message || "Some error occurred while retrieving rooms."
+		});
+	  });
+  };
+
+// Find a single Room with detail by an id
 exports.findOne = (req, res) => {
 	const id = req.params.id;
   

@@ -40,7 +40,6 @@ exports.login = async (req, res) => {
      
 	const {guest_email, guest_password} = req.body;
 	const user = await Guest.findOne({ where: { guest_email: guest_email } });
-	// const user = await Admin.findOne({email:email});
 	if(!user){
 		res.status(400).send({message:"User Not Found"});
 	}
@@ -61,3 +60,25 @@ exports.login = async (req, res) => {
 	}
 
 };
+
+
+//change Password by Guest
+exports.changePassword = async (req, res) => {
+     
+	const { guest_email } = req.body;
+	const user = await Guest.findOne({ where: { guest_email: guest_email } });
+	if(!user){
+		res.status(400).send({message:"User Not Found"});
+	}
+	else{
+		const saltRounds = 10;
+		const newHashPassword = await bcrypt.hash(req.body.guest_password, saltRounds);
+		user.guest_password = newHashPassword;
+		user.save();
+		 res.status(201).send({
+			 message:"Password Changed Sucessfully"
+		 })
+	}
+
+};
+

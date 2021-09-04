@@ -15,6 +15,7 @@ exports.create = async (req, res) => {
 		admin_email: req.body.admin_email,
         // admin_password: req.body.admin_password,
 		admin_password: hashPassword,
+		admin_phone: req.body.admin_phone,
         admin_address: req.body.admin_address,
     };
 	  console.log(admin);

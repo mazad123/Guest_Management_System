@@ -1,13 +1,21 @@
 module.exports = (sequelize, Sequelize) => {
 	const Booking = sequelize.define('book_Room', {
-	  guest_name: {
+    guest_id: {
+      type: Sequelize.BIGINT,
+      defaultValue: null
+    },
+    manager_id: {
+      type: Sequelize.BIGINT,
+      defaultValue: null
+    },
+	    guest_name: {
 		    type: Sequelize.STRING,
         allowNull: false
-	  },
+	    },
       guest_email: {
 		    type: Sequelize.STRING,
         allowNull: false
-	  },
+	    },
       guest_phone:{
         type: Sequelize.BIGINT,
         allowNull: false
@@ -25,6 +33,16 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 500
+     },
+     booking_person:{
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue:'Guest'
+     },
+     booking_status:{
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue:'Booked Sucessfully'
      }
 	});
 	
