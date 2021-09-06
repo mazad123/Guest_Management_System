@@ -2,11 +2,11 @@ module.exports = app => {
     const rooms = require("../controllers/room.controller");
     const adminAuthhMiddleware = require('../middlewares/admin.auth.middleware');
     const managerAuthhMiddleware = require('../middlewares/manager.auth.middleware');
-  
+    const validation = require('../validations/room.input.validation');
     var router = require("express").Router();
   
     // Create a new Room
-    router.post("/createRoom", adminAuthhMiddleware, rooms.create);
+    router.post("/createRoom", validation.roomInputValidation, adminAuthhMiddleware, rooms.create);
 
     // Retrieve all Rooms
     router.get("/allRooms", adminAuthhMiddleware || managerAuthhMiddleware, rooms.findAllRoom);

@@ -1,20 +1,20 @@
 module.exports = (sequelize, Sequelize) => {
 	const Room = sequelize.define('room', {
-	  room_Number: {
+	  room_number: {
 		type: Sequelize.BIGINT,
         allowNull: false,
 		unique: true,
 	  },
-	  room_Type: {
+	  room_type: {
 		type: Sequelize.STRING,
         allowNull: false
 	  },
-      room_Status: {
+      room_status: {
 		type: Sequelize.STRING,
         allowNull: false,
 		defaultValue:'Avaiable'
 	  },
-	  room_Price: {
+	  room_price: {
 		  type: Sequelize.FLOAT,
 		  allowNull: false, 
           defaultValue: 1000

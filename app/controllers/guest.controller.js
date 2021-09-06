@@ -1,12 +1,21 @@
 const db = require("../models");
 const Guest = db.guests;
 
+const applyPagination = require('../pagination/paging');
+
 // Retrieve all Guests from the database.
 exports.findAll = (req, res) => {
-	Guest.findAll()
+
+	const { page, size } = req.query;
+    const { limit, offset } = applyPagination.getPagination(page, size);
+
+	// Guest.findAll()
+	Guest.findAndCountAll({ limit, offset})
 	  .then(data => {
 		console.log("data is:",data);
-		res.send(data);
+		const response = applyPagination.getPagingData(data, page, limit);
+		// res.send(data); 
+		res.send(response);
 	  })
 	  .catch(err => {
 		res.status(500).send({
@@ -23,10 +32,12 @@ exports.findOne = (req, res) => {
 	Guest.findByPk(id)
 	  .then(data => {
 		if(data){
-			res.send(data);
+			res.status(201).send(data);
 			console.log("data is:",data);
-		}  
-		res.send(`Data not found with id = ${id}`)
+		} else{
+			res.status(404).send(`Data not found with id = ${id}`)
+			res.end();
+		} 
 	  })
 	  .catch(err => {
 		res.status(500).send({

@@ -4,8 +4,16 @@ const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 const authConfig = require('../config/auth.config');
 
-// Create and Save a new Admin
+
+//some important point i found
+// const oldUser = await User.findOne({ email });
+
+//     if (oldUser) {
+//       return res.status(409).send("User Already Exist. Please Login");
+//     }
+// Create and Save a new Admin  
 exports.create = async (req, res) => {
+	
 	  const saltRounds = 10;
 	  const hashPassword = await bcrypt.hash(req.body.admin_password, saltRounds);
 
@@ -19,7 +27,12 @@ exports.create = async (req, res) => {
         admin_address: req.body.admin_address,
     };
 	  console.log(admin);
-	
+	//some important point i found
+// const oldUser = await User.findOne({ email });
+
+//     if (oldUser) {
+//       return res.status(409).send("User Already Exist. Please Login");
+//     }
 	  // Save Admin in the database
 	  Admin.create(admin)
 		.then(data => {
@@ -36,9 +49,10 @@ exports.create = async (req, res) => {
 
 //login Admin
 exports.login = async (req, res) => {
-     
+ 
 	const {admin_email, admin_password} = req.body;
 	const user = await Admin.findOne({ where: { admin_email: admin_email } });
+	console.log("user is:"+user.id);
 	// const user = await Admin.findOne({email:email});
 	if(!user){
 		res.status(400).send({message:"User Not Found"});

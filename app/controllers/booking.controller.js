@@ -1,13 +1,18 @@
 const db = require("../models");
 const Booking = db.bookings;
 
+const applyPagination = require('../pagination/paging');
 
 // Create and Save a new Booking
 exports.create = (req, res) => {
 	  // Create a booking
+	//   const loginId = req.userId;
+	//   console.log('login'+loginId)
 	  const booking = {
 		guest_id: req.body.guest_id,
+		// guest_id: loginId ? loginId :'',
 		manager_id: req.body.manager_id, 
+		// manager_id : loginId ? loginId : '',
 		guest_name: req.body.guest_name,
 		guest_email: req.body.guest_email,
         guest_phone: req.body.guest_phone,
@@ -36,10 +41,16 @@ exports.create = (req, res) => {
 
 // Retrieve all Rooms booked by Manager for the guest from the database.
 exports.findAllRoomBookedByManager = (req, res) => {
-	Booking.findAll({ where: { booking_person: 'Manager' } })
+	const { page, size } = req.query;
+    const { limit, offset } = applyPagination.getPagination(page, size);
+
+	// Booking.findAll({ where: { booking_person: 'Manager' } })
+	Booking.findAndCountAll({ limit, offset, where: { booking_person: 'Manager' } })
 	  .then(data => {
 		console.log("data is:",data);
-		res.send(data);
+		const response = applyPagination.getPagingData(data, page, limit);
+		// res.send(data); 
+		res.send(response);
 	  })
 	  .catch(err => {
 		res.status(500).send({
@@ -51,10 +62,16 @@ exports.findAllRoomBookedByManager = (req, res) => {
 
 // Retrieve all Rooms booked by Guests for the guest from the database.
 exports.findAllRoomBookedByGuest = (req, res) => {
-	Booking.findAll({ where: { booking_person: 'Guest' } })
+    const { page, size } = req.query;
+    const { limit, offset } = applyPagination.getPagination(page, size);
+
+	// Booking.findAll({ where: { booking_person: 'Guest' } })
+	Booking.findAndCountAll({ limit, offset, where: { booking_person: 'Guest' } })
 	  .then(data => {
 		console.log("data is:",data);
-		res.send(data);
+		const response = applyPagination.getPagingData(data, page, limit);
+		// res.send(data); 
+		res.send(response);
 	  })
 	  .catch(err => {
 		res.status(500).send({
@@ -83,3 +100,25 @@ exports.findOne = (req, res) => {
 		});
 	  });
   };  
+
+
+// Booking History 
+exports.bookingHistory = (req, res) => {
+    const { page, size } = req.query;
+    const { limit, offset } = applyPagination.getPagination(page, size);
+
+	// Booking.findAll({ where: { booking_person: 'Guest' } })
+	Booking.findAndCountAll({ limit, offset, where: { guest_id: guest_id} })
+	  .then(data => {
+		console.log("data is:",data);
+		const response = applyPagination.getPagingData(data, page, limit);
+		// res.send(data); 
+		res.send(response);
+	  })
+	  .catch(err => {
+		res.status(500).send({
+		  message:
+			err.message || "Some error occurred while retrieving rooms."
+		});
+	  });
+  };

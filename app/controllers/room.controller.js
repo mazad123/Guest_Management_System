@@ -1,15 +1,16 @@
 const db = require("../models");
 const Room = db.rooms;
 
+const applyPagination = require('../pagination/paging');
 
 // Create and Save a new Room
 exports.create = (req, res) => {
 	  // Create a Room
 	  const room = {
-		room_Number: req.body.room_Number,
-		room_Type: req.body.room_Type,
-		room_Status: req.body.room_Status,
-        room_Price: req.body.room_Price
+		room_number: req.body.room_number,
+		room_type: req.body.room_type,
+		room_status: req.body.room_status,
+        room_price: req.body.room_price
 	  };
 	  console.log(room);
 	
@@ -30,10 +31,17 @@ exports.create = (req, res) => {
 
 // Retrieve all Rooms from the database.
 exports.findAllRoom = (req, res) => {
-	Room.findAll()
+	
+	const { page, size } = req.query;
+    const { limit, offset } = applyPagination.getPagination(page, size);
+
+	// Room.findAll()
+	Room.findAndCountAll({ limit, offset })
 	  .then(data => {
 		console.log("data is:",data);
-		res.send(data);
+		const response = applyPagination.getPagingData(data, page, limit);
+		// res.send(data); 
+		res.send(response);
 	  })
 	  .catch(err => {
 		res.status(500).send({
@@ -45,10 +53,16 @@ exports.findAllRoom = (req, res) => {
 
 // Retrieve only available Rooms from the database.
 exports.findAllRoomWithCondition = (req, res) => {
-	Room.findAll({ where: { room_Status: 'Available' } })
+	const { page, size } = req.query;
+    const { limit, offset } = applyPagination.getPagination(page, size);
+
+	// Room.findAll({ where: { room_Status: 'Available' } })
+	Room.findAndCountAll({ limit, offset, where: { room_status: 'Available' } })
 	  .then(data => {
 		console.log("data is:",data);
-		res.send(data);
+		const response = applyPagination.getPagingData(data, page, limit);
+		// res.send(data); 
+		res.send(response);
 	  })
 	  .catch(err => {
 		res.status(500).send({
