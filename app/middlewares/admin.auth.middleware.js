@@ -11,7 +11,7 @@ const adminAuthhMiddleware =  (req,res,next) =>{
         console.log("hello")
         var decoded = jwt.verify(token, authConfig.secret_key);
         console.log("in auth"+decoded);
-        // req.userData = decoded;
+        req.userData = decoded;
         // console.log(token);
         var userId = decoded.id  
         console.log("user id is:"+userId)  

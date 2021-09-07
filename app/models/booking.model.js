@@ -1,3 +1,6 @@
+
+const modelConstants = require('./constants/model.constant');
+
 module.exports = (sequelize, Sequelize) => {
 	const Booking = sequelize.define('book_Room', {
     guest_id: {
@@ -37,12 +40,13 @@ module.exports = (sequelize, Sequelize) => {
      booking_person:{
       type: Sequelize.STRING,
       allowNull: false,
-      defaultValue:'Guest'
+      // defaultValue:'Guest'
+      defaultValue:modelConstants.defaltValueMessages.BOOKING_PERSON
      },
      booking_status:{
       type: Sequelize.STRING,
       allowNull: false,
-      defaultValue:'Booked Sucessfully'
+      defaultValue:modelConstants.defaltValueMessages.BOOKING_STATUS.SUCCESS
      }
 	});
 	

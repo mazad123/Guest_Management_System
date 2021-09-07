@@ -21,6 +21,7 @@ exports.guestSignupValidation = [
     ,
     check('guest_address')
         .notEmpty().withMessage('Address can not be null or empty')	
+        .isLength({min:4, max:30}).withMessage('Guest address length should be 4 to 30 chracters long')
     ,        
 
     (req, res, next) => {

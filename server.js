@@ -30,6 +30,7 @@ require('./app/routes/room.routes')(app);
 require('./app/routes/admin.routes')(app); 
 require('./app/routes/manager.routes')(app); 
 require('./app/routes/guest.routes')(app); 
+require('./app/routes/guest.auth.routes')(app);
 require('./app/routes/booking.routes')(app);
 
 // set port, listen for requests

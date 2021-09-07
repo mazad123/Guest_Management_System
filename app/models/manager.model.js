@@ -19,7 +19,6 @@ module.exports = (sequelize, Sequelize) => {
 	  manager_address: {
 		  type: Sequelize.STRING,
 		  allowNull: false, 
-          defaultValue: 'Mohali'
 	  },
 	});
 	

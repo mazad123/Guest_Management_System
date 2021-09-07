@@ -1,3 +1,6 @@
+
+const modelConstants = require('./constants/model.constant');
+
 module.exports = (sequelize, Sequelize) => {
 	const Room = sequelize.define('room', {
 	  room_number: {
@@ -12,12 +15,12 @@ module.exports = (sequelize, Sequelize) => {
       room_status: {
 		type: Sequelize.STRING,
         allowNull: false,
-		defaultValue:'Avaiable'
+		defaultValue:modelConstants.defaltValueMessages.ROOM_STATUS
 	  },
 	  room_price: {
 		  type: Sequelize.FLOAT,
 		  allowNull: false, 
-          defaultValue: 1000
+          defaultValue:modelConstants.defaltValueMessages.ROOM_PRICE
 	  },
 	});
 	

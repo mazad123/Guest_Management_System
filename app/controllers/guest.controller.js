@@ -3,6 +3,8 @@ const Guest = db.guests;
 
 const applyPagination = require('../pagination/paging');
 
+const responseMessages = require('../constants/message.constant');
+
 // Retrieve all Guests from the database.
 exports.findAll = (req, res) => {
 
@@ -15,14 +17,17 @@ exports.findAll = (req, res) => {
 		console.log("data is:",data);
 		const response = applyPagination.getPagingData(data, page, limit);
 		// res.send(data); 
-		res.send(response);
-	  })
+		res.send({
+			message:responseMessages.messages.FIND_GUEST.SUCCESS,
+            response
+		});
+	})
 	  .catch(err => {
 		res.status(500).send({
 		  message:
-			err.message || "Some error occurred while retrieving guests."
+			err.message || responseMessages.messages.FIND_GUEST.FAILED
 		});
-	  });
+	});
   };
 
 // Find a single Guest with an id
@@ -32,16 +37,19 @@ exports.findOne = (req, res) => {
 	Guest.findByPk(id)
 	  .then(data => {
 		if(data){
-			res.status(201).send(data);
+			res.status(201).send({
+				message:responseMessages.messages.FIND_GUEST.SUCCESS,
+				data
+			});
 			console.log("data is:",data);
 		} else{
-			res.status(404).send(`Data not found with id = ${id}`)
+			res.status(404).send({message:responseMessages.messages.USER_NOT_FOUND})
 			res.end();
 		} 
 	  })
 	  .catch(err => {
 		res.status(500).send({
-		  message: "Error retrieving Guest with id=" + id
+		  message:responseMessages.messages.FIND_GUEST.FAILED
 		});
 	  });
   };

@@ -3,6 +3,8 @@ const Room = db.rooms;
 
 const applyPagination = require('../pagination/paging');
 
+const responseMessages = require('../constants/message.constant');
+
 // Create and Save a new Room
 exports.create = (req, res) => {
 	  // Create a Room
@@ -18,12 +20,16 @@ exports.create = (req, res) => {
 	  Room.create(room)
 		.then(data => {
 	      console.log(data);	
-		  res.send(data);
+		//   res.send(data);
+		res.send({
+			message:responseMessages.messages.CREATE_ROOM.SUCCESS,
+            data:data
+		   });
 		})
 		.catch(err => {
 		  res.status(500).send({
 			message:
-			  err.message || "Some error occurred while creating the room."
+			  err.message || responseMessages.messages.CREATE_ROOM.FAILED
 		  });
 		});
 };
@@ -41,12 +47,15 @@ exports.findAllRoom = (req, res) => {
 		console.log("data is:",data);
 		const response = applyPagination.getPagingData(data, page, limit);
 		// res.send(data); 
-		res.send(response);
+		res.send({
+			message:responseMessages.messages.FIND_ROOM.SUCCESS,
+			response
+		});
 	  })
 	  .catch(err => {
 		res.status(500).send({
 		  message:
-			err.message || "Some error occurred while retrieving rooms."
+			err.message || responseMessages.messages.FIND_ROOM.FAILED
 		});
 	  });
   };
@@ -62,12 +71,16 @@ exports.findAllRoomWithCondition = (req, res) => {
 		console.log("data is:",data);
 		const response = applyPagination.getPagingData(data, page, limit);
 		// res.send(data); 
-		res.send(response);
+		// res.send(response);
+		res.send({
+			message:responseMessages.messages.FIND_ROOM.SUCCESS,
+			response
+		});
 	  })
 	  .catch(err => {
 		res.status(500).send({
 		  message:
-			err.message || "Some error occurred while retrieving rooms."
+			err.message || responseMessages.messages.FIND_ROOM.FAILED
 		});
 	  });
   };
@@ -79,14 +92,19 @@ exports.findOne = (req, res) => {
 	Room.findByPk(id)
 	  .then(data => {
 		if(data){
-			res.send(data);
+			// res.send(data);
+			res.send({
+				message:responseMessages.messages.FIND_ROOM.SUCCESS,
+				data
+			});
 			console.log("data is:",data);
 		}  
-		res.send(`Data not found with id = ${id}`)
+		// res.send(`Data not found with id = ${id}`)
+		res.send({message:responseMessages.messages.DATA_NOT_FOUND})
 	  })
 	  .catch(err => {
 		res.status(500).send({
-		  message: "Error retrieving Room with id=" + id
+		  message: responseMessages.messages.FIND_ROOM.FAILED
 		});
 	  });
   };
@@ -106,17 +124,18 @@ exports.update = (req, res) => {
 		if (num == 1) {
 		  console.log(num);	
 		  res.send({
-			message: "Room was updated successfully."
+			message: responseMessages.messages.UPDATE_ROOM.SUCCESS,
 		  });
 		} else {
 		  res.send({
-			message: `Cannot update Room with id=${id}. Maybe Room was not found or req.body is empty!`
+			message: responseMessages.messages.UPDATE_ROOM.FAILED
 		  });
 		}
 	  })
 	  .catch(err => {
 		res.status(500).send({
-		  message: "Error updating Room with id=" + id
+		//   message: "Error updating Room with id=" + id
+		message: responseMessages.messages.UPDATE_ROOM.FAILED
 		});
 	  });
 };
@@ -135,17 +154,18 @@ exports.delete = (req, res) => {
 				console.log("check id"+id)
 				console.log("check num"+num);
 			  res.send({
-				message: "Room was deleted successfully!"
+				message: responseMessages.messages.DELETE_ROOM.SUCCESS,
 			  });
 			} else {
 			  res.send({
-				message: `Cannot delete Room with id=${id}. Maybe Room was not found!`
+				message: responseMessages.messages.DELETE_ROOM.FAILED
 			  });
 			}
 		  })
 		  .catch(err => {
 			res.status(500).send({
-			  message: "Could not delete Room with id=" + id
+			//   message: "Could not delete Room with id=" + id
+			message: responseMessages.messages.DELETE_ROOM.FAILED
 			});
 		  });
 };  

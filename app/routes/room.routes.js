@@ -9,7 +9,7 @@ module.exports = app => {
     router.post("/createRoom", validation.roomInputValidation, adminAuthhMiddleware, rooms.create);
 
     // Retrieve all Rooms
-    router.get("/allRooms", adminAuthhMiddleware || managerAuthhMiddleware, rooms.findAllRoom);
+    router.get("/allRooms", adminAuthhMiddleware, rooms.findAllRoom);
 
     // Retrieve only Avaialbe Rooms 
     router.get("/availableRooms", rooms.findAllRoomWithCondition);

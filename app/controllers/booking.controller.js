@@ -3,16 +3,23 @@ const Booking = db.bookings;
 
 const applyPagination = require('../pagination/paging');
 
+const responseMessages = require('../constants/message.constant');
+
+    // const managerAuthhMiddleware = require('../middlewares/manager.auth.middleware');
+    // const guestAuthhMiddleware = require('../middlewares/guest.auth.middleware');;
+	// const gId = guestAuthhMiddleware.decoded.id;
+	// const mId = managerAuthhMiddleware.decoded.id;
 // Create and Save a new Booking
 exports.create = (req, res) => {
 	  // Create a booking
-	//   const loginId = req.userId;
-	//   console.log('login'+loginId)
+
+	//   console.log('login:'+gId);
+	//   console.log('mid:'+mId)
 	  const booking = {
 		guest_id: req.body.guest_id,
-		// guest_id: loginId ? loginId :'',
+		// guest_id: gId ? gId : 'NULL',
 		manager_id: req.body.manager_id, 
-		// manager_id : loginId ? loginId : '',
+		// manager_id : mId ? mId : 'NULL',
 		guest_name: req.body.guest_name,
 		guest_email: req.body.guest_email,
         guest_phone: req.body.guest_phone,
@@ -28,12 +35,15 @@ exports.create = (req, res) => {
 	  Booking.create(booking)
 		.then(data => {
 	      console.log(data);	
-		  res.send(data);
+		  res.send({
+			  message:responseMessages.messages.CREATE_BOOKING.SUCCESS,
+			  data
+			});
 		})
 		.catch(err => {
 		  res.status(500).send({
 			message:
-			  err.message || "Some error occurred while booking the Room."
+			  err.message || responseMessages.messages.CREATE_BOOKING.FAILED
 		  });
 		});
 };
@@ -50,14 +60,17 @@ exports.findAllRoomBookedByManager = (req, res) => {
 		console.log("data is:",data);
 		const response = applyPagination.getPagingData(data, page, limit);
 		// res.send(data); 
-		res.send(response);
-	  })
+		res.send({
+			message:responseMessages.messages.FIND_BOOKING.SUCCESS,
+			response
+		});
+	})
 	  .catch(err => {
 		res.status(500).send({
 		  message:
-			err.message || "Some error occurred while retrieving rooms."
+			err.message || responseMessages.messages.FIND_BOOKING.FAILED
 		});
-	  });
+	});
   };
 
 // Retrieve all Rooms booked by Guests for the guest from the database.
@@ -71,14 +84,17 @@ exports.findAllRoomBookedByGuest = (req, res) => {
 		console.log("data is:",data);
 		const response = applyPagination.getPagingData(data, page, limit);
 		// res.send(data); 
-		res.send(response);
-	  })
+		res.send({
+			message:responseMessages.messages.FIND_BOOKING.SUCCESS,
+			response
+		});
+	})
 	  .catch(err => {
 		res.status(500).send({
 		  message:
-			err.message || "Some error occurred while retrieving rooms."
+			err.message || responseMessages.messages.FIND_BOOKING.FAILED
 		});
-	  });
+	});
   };
 
 
@@ -89,14 +105,19 @@ exports.findOne = (req, res) => {
 	Booking.findOne({where: {id: id, booking_status: 'Booked Sucessfully'} })
 	  .then(data => {
 		if(data){
-			res.send(data);
+			res.send({
+				message:responseMessages.messages.FIND_BOOKING.SUCCESS,
+				data
+			});
 			console.log("data is:",data);
 		}  
-		res.send(`Data not found with id = ${id}`)
+		res.send({
+			message:responseMessages.messages.DATA_NOT_FOUND,
+		})
 	  })
 	  .catch(err => {
 		res.status(500).send({
-		  message: "Error retrieving Room with id=" + id
+		  message: responseMessages.messages.FIND_BOOKING.FAILED
 		});
 	  });
   };  
@@ -113,12 +134,15 @@ exports.bookingHistory = (req, res) => {
 		console.log("data is:",data);
 		const response = applyPagination.getPagingData(data, page, limit);
 		// res.send(data); 
-		res.send(response);
+		res.send({
+			message:responseMessages.messages.BOOKING_HISTORY.SUCCESS,
+			response
+		});
 	  })
 	  .catch(err => {
 		res.status(500).send({
 		  message:
-			err.message || "Some error occurred while retrieving rooms."
+			err.message || responseMessages.messages.BOOKING_HISTORY.FAILED,
 		});
 	  });
   };

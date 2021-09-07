@@ -19,7 +19,6 @@ module.exports = (sequelize, Sequelize) => {
 	  guest_address: {
 		  type: Sequelize.STRING,
 		  allowNull: false, 
-          defaultValue: 'Goa'
 	  },
 	});
 	

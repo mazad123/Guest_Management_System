@@ -33,6 +33,7 @@ exports.adminSignupValidation = [
     ,
     check('admin_address')
         .notEmpty().withMessage('Address can not be null or empty')	
+        .isLength({min:3, max:30}).withMessage('Admin address length should be 4 to 30 chracters only ')
     ,        
 
     (req, res, next) => {

@@ -15,12 +15,10 @@ module.exports = (sequelize, Sequelize) => {
 	  admin_phone:{
 		type: Sequelize.BIGINT,
 		allowNull: false, 
-        defaultValue: 9721506247
 	  },
 	  admin_address: {
-		type: Sequelize.STRING,
+		type: Sequelize.STRING, 
 		allowNull: false, 
-        defaultValue: 'Gola'
 	  },
 	});
 	

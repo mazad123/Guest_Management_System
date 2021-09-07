@@ -11,6 +11,5 @@ module.exports = app => {
     //Login Manager
     router.post("/managerLogin", validation.managerLoginValidation, managers.login);
 
-    app.use('/api', router);
-    // app.use('/', router);
+    app.use('/api/manager', router);
   };
