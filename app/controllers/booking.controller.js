@@ -5,21 +5,19 @@ const applyPagination = require('../pagination/paging');
 
 const responseMessages = require('../constants/message.constant');
 
-    // const managerAuthhMiddleware = require('../middlewares/manager.auth.middleware');
-    // const guestAuthhMiddleware = require('../middlewares/guest.auth.middleware');;
-	// const gId = guestAuthhMiddleware.decoded.id;
-	// const mId = managerAuthhMiddleware.decoded.id;
+var jwt = require('jsonwebtoken');
+const authConfig = require('../config/auth.config');
 // Create and Save a new Booking
 exports.create = (req, res) => {
+		var token = req.headers.authorization.split(" ")[1];
+		var decoded = jwt.verify(token, authConfig.secret_key);
+		req.userData = decoded;
+		var userId = decoded.id;
+		var userType = decoded.user_type; 
 	  // Create a booking
-
-	//   console.log('login:'+gId);
-	//   console.log('mid:'+mId)
 	  const booking = {
-		guest_id: req.body.guest_id,
-		// guest_id: gId ? gId : 'NULL',
-		manager_id: req.body.manager_id, 
-		// manager_id : mId ? mId : 'NULL',
+		guest_id: (userType=='guest')?userId:null, 
+		manager_id: (userType=='manager')?userId:null, 
 		guest_name: req.body.guest_name,
 		guest_email: req.body.guest_email,
         guest_phone: req.body.guest_phone,
@@ -129,15 +127,22 @@ exports.bookingHistory = (req, res) => {
     const { limit, offset } = applyPagination.getPagination(page, size);
 
 	// Booking.findAll({ where: { booking_person: 'Guest' } })
-	Booking.findAndCountAll({ limit, offset, where: { guest_id: guest_id} })
+	Booking.findAndCountAll({ limit, offset, where: { guest_id:null} })
+	// Booking.findAndCountAll({ limit, offset, where: {guest_id: { $not: 0 }}})
 	  .then(data => {
 		console.log("data is:",data);
 		const response = applyPagination.getPagingData(data, page, limit);
-		// res.send(data); 
-		res.send({
-			message:responseMessages.messages.BOOKING_HISTORY.SUCCESS,
-			response
-		});
+		if(response){
+			// res.send(data); 
+			res.send({
+				message:responseMessages.messages.BOOKING_HISTORY.SUCCESS,
+				response
+			});
+		}else{
+			res.send({
+				message:responseMessages.messages.DATA_NOT_FOUND
+			});
+		}		
 	  })
 	  .catch(err => {
 		res.status(500).send({

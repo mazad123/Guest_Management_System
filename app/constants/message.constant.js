@@ -45,9 +45,4 @@ exports.messages = {
         FAILED:'Login Faild due to some error'
     },
     INVALID_CREDENTIALS: 'Invalid Credentials'
-
-    
-    // INTERNAL_SERVER_ERROR: 'INTERNAL SERVER ERROR',
-    // INVALID_PASSWORD: 'Invalid Password',
-    // INVALID_EMAIL: 'Invalid Email'
 }

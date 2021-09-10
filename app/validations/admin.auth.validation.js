@@ -2,17 +2,10 @@ const { check, validationResult } = require('express-validator');
 
 exports.adminSignupValidation = [
 
-
-     // check('email').isEmail(),
     // check('admin_name', 'Name length should be 10 to 20 characters')
     //     .isLength({ min: 4, max: 20 }),
     // check('admin_email', 'Email length should be 10 to 30 characters')
     //     .isEmail().isLength({ min: 10, max: 30 }),
-    // check('admin_phone', 'Mobile number should contains 10 digits')
-    //     .isLength({ min: 10, max: 10 }),
-    // check('admin_password', 'Password length should be 8 to 10 characters')
-    //     .isLength({ min: 8, max: 10 }),
-
 
     check('admin_name')
         .notEmpty().withMessage('Name can not be null or empty')

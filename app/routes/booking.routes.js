@@ -20,7 +20,7 @@ module.exports = app => {
     router.get("/getOneBookedRoom/:id", bookings.findOne);
 
      //Fetch booking history 
-     router.get("/historyBooking", bookings.bookingHistory);
+     router.get("/bookingHistory", bookings.bookingHistory);
   
     app.use('/api', router);
     // app.use('/', router);

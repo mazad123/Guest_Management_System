@@ -59,7 +59,7 @@ exports.login = async (req, res) => {
 	else{
 		const isValid = await bcrypt.compare(guest_password, user.guest_password)
 		if(isValid){
-		   const accessToken = await jwt.sign({id:user.id,guest_email:user.guest_email}, authConfig.secret_key);
+		   const accessToken = await jwt.sign({id:user.id,user_type:'guest',guest_email:user.guest_email}, authConfig.secret_key);
 		   console.log(guest_email,guest_password,accessToken);
 		   res.json({
 			  message:responseMessages.messages.LOGIN.SUCCESS,

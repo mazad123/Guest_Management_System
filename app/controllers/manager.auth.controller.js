@@ -58,7 +58,7 @@ exports.login = async (req, res) => {
 	else{
 		const isValid = await bcrypt.compare(manager_password, user.manager_password)
 		if(isValid){
-		   const accessToken = await jwt.sign({id:user.id,manager_email:user.manager_email}, authConfig.secret_key);
+		   const accessToken = await jwt.sign({id:user.id,user_type:'manager',manager_email:user.manager_email}, authConfig.secret_key);
 		   console.log(manager_email,manager_password,accessToken);
 		   res.json({
 			  message:responseMessages.messages.LOGIN.SUCCESS,

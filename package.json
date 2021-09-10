@@ -18,11 +18,14 @@
   "homepage": "https://github.com/mazad123/Guest_Management_System#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-validator": "^6.12.1",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.0",
+    "node-localstorage": "^2.2.1",
     "sequelize": "^6.6.5"
   }
 }

@@ -1,21 +1,33 @@
 const jwt = require('jsonwebtoken');
 const authConfig = require('../config/auth.config');
 
-const adminAuthhMiddleware =  (req,res,next) =>{
-    // var headerToken = req.headers;
-    // console.log(headerToken);
+    //    var token = req.headers.authorization.split(" ")[1];
 
+
+
+const adminAuthhMiddleware =  async (req,res,next) =>{
+    
+   
     try{
-        var token = req.headers.authorization.split(" ")[1];
+        // var token = localStorage.getItem('adminToken');
+        // console.log("token is:"+token);
+        const token = req.cookies.jwtToken;
         console.log("token is:"+token);
-        console.log("hello")
+        console.log(`My Cokies is: ${req.cookies.jwtToken}`)
         var decoded = jwt.verify(token, authConfig.secret_key);
-        console.log("in auth"+decoded);
-        req.userData = decoded;
-        // console.log(token);
-        var userId = decoded.id  
-        console.log("user id is:"+userId)  
-        next();
+        console.log('data in iddle:'+decoded.admin_email);
+        // req.userData = decoded;
+        var userId = decoded.id;
+        var userType = decoded.user_type;  
+        console.log("user id is:"+userId, userType)  
+        if(userType!=="admin"){
+           res.status(404).send("Un Authorized User");
+        }
+        else{
+            next();
+        }
+               
+        // next();
 
     }catch(e){
         res.status(401).send({message:"Invalid token"})

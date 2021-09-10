@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title><%= title %></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+      <h2><%= title %></h2>
+      <a href="/api/createRoom" class="btn btn-sm btn-primary">CREATE ROOM</a><br/><br/>
+      <table class="table table-dark table-striped">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Room Number</th>
+            <th>Room Type</th>
+            <th>Room Status</th>
+            <th>Room Price</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+          </tr>
+        </thead>
+        <tbody>
+            <% if (response.records.length > 0) { %>
+                <% response.records.forEach(item => { %> 
+                  <tr>
+                      <td><%= item.id %></td>                   
+                      <td><%= item.room_number %></td>
+                      <td><%= item.room_type %></td>
+                      <td><%= item.room_status %></td>
+                      <td><%= item.room_price %></td>
+                      <td><%= item.createdAt %></td>
+                      <td><%= item.updatedAt %></td>
+                      <td>
+                        <a href="edit/<%= item.id %>" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="delete/<%= item.id %>" class="btn btn-sm btn-danger">Delete</a>
+                      </td>
+                  </tr>    
+                <%  }) %>
+            <%} else { %> 
+                <h2> No data found </h2>
+                <% } %>
+        </tbody>
+      </table>
+    </div>
+</body>
+</html>

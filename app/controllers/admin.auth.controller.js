@@ -22,7 +22,6 @@ exports.create = async (req, res) => {
 	   //Check if Alreday user exist or not
 		const oldAdmin = await Admin.findOne({ where: { admin_email: req.body.admin_email } });
         if (oldAdmin) {
-			// return res.status(409).send("User Already Exist. Please Login");
 			return res.status(409).send({message:responseMessages.messages.ALREADY_EXIST});
 		}
 	  // Save Admin in the database
@@ -45,28 +44,32 @@ exports.create = async (req, res) => {
 
 //login Admin
 exports.login = async (req, res) => {
- 
 	const {admin_email, admin_password} = req.body;
+	console.log('detail:'+admin_email,admin_password);
 	const user = await Admin.findOne({ where: { admin_email: admin_email } });
+	console.log('user is:',user);
 	if(!user){
-		// res.status(400).send({message:"User Not Found"});
 		res.status(400).send({ message:responseMessages.messages.USER_NOT_FOUND });
 	}
 	else{
 		const isValid = await bcrypt.compare(admin_password, user.admin_password)
 		if(isValid){
-		   const accessToken = await jwt.sign({id:user.id,admin_email:user.admin_email}, authConfig.secret_key);
+		   const accessToken = await jwt.sign({id:user.id,user_type:'admin',admin_email:user.admin_email}, authConfig.secret_key);
+		   res.cookie('jwtToken' , accessToken, {
+              expires: new Date(Date.now()+ 80000),
+			  httpOnly:true	
+		   })
+		   console.log(`Cookies is: ${req.cookies.jwtToken}`);
+		//    localStorage.setItem('adminToken', accessToken)
 		   console.log(admin_email,admin_password,accessToken);
-		   res.json({
+		   res.send({
 			  message:responseMessages.messages.LOGIN.SUCCESS, 
 			  admin_email,
 			  admin_password,
 			  accessToken,
 		  })
-
 		}
 		else{
-		//    res.status(400).send({message:"Invalid credentials"});
 		res.status(400).send({message:responseMessages.messages.INVALID_CREDENTIALS});
 		}
 	}

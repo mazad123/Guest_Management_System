@@ -5,11 +5,11 @@ module.exports = (sequelize, Sequelize) => {
 	const Booking = sequelize.define('book_Room', {
     guest_id: {
       type: Sequelize.BIGINT,
-      defaultValue: null
+      allowNull: true
     },
     manager_id: {
       type: Sequelize.BIGINT,
-      defaultValue: null
+      allowNull: true
     },
 	    guest_name: {
 		    type: Sequelize.STRING,
@@ -35,12 +35,11 @@ module.exports = (sequelize, Sequelize) => {
       total_amount_pay: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 500
+        defaultValue:modelConstants.defaltValueMessages.TOTAL_AMOUNT_PAY
      },
      booking_person:{
       type: Sequelize.STRING,
       allowNull: false,
-      // defaultValue:'Guest'
       defaultValue:modelConstants.defaltValueMessages.BOOKING_PERSON
      },
      booking_status:{

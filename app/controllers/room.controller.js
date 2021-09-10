@@ -40,24 +40,25 @@ exports.findAllRoom = (req, res) => {
 	
 	const { page, size } = req.query;
     const { limit, offset } = applyPagination.getPagination(page, size);
-
 	// Room.findAll()
 	Room.findAndCountAll({ limit, offset })
-	  .then(data => {
-		console.log("data is:",data);
-		const response = applyPagination.getPagingData(data, page, limit);
-		// res.send(data); 
-		res.send({
-			message:responseMessages.messages.FIND_ROOM.SUCCESS,
-			response
-		});
-	  })
-	  .catch(err => {
-		res.status(500).send({
-		  message:
-			err.message || responseMessages.messages.FIND_ROOM.FAILED
-		});
-	  });
+	.then(data => {
+	console.log("data is:",data);
+	const response = applyPagination.getPagingData(data, page, limit);
+	// res.send(data);
+	console.log('response is'+response['records']); 
+	// res.send({
+	// 	message:responseMessages.messages.FIND_ROOM.SUCCESS,
+	// 	response
+	// });
+	res.render('findAllRooms', { title:"Get all data from databse", message:responseMessages.messages.FIND_ROOM.SUCCESS, response});
+	})
+	.catch(err => {
+	res.status(500).send({
+		message:
+		err.message || responseMessages.messages.FIND_ROOM.FAILED
+	});
+	});
   };
 
 // Retrieve only available Rooms from the database.
@@ -72,10 +73,11 @@ exports.findAllRoomWithCondition = (req, res) => {
 		const response = applyPagination.getPagingData(data, page, limit);
 		// res.send(data); 
 		// res.send(response);
-		res.send({
-			message:responseMessages.messages.FIND_ROOM.SUCCESS,
-			response
-		});
+		// res.send({
+		// 	message:responseMessages.messages.FIND_ROOM.SUCCESS,
+		// 	response
+		// });
+		res.render('findAllRooms', { title:"Get All Available Rooms data from Database", message:responseMessages.messages.FIND_ROOM.SUCCESS, response});
 	  })
 	  .catch(err => {
 		res.status(500).send({
@@ -87,20 +89,21 @@ exports.findAllRoomWithCondition = (req, res) => {
 
 // Find a single Room with detail by an id
 exports.findOne = (req, res) => {
-	const id = req.params.id;
-  
+	var id = req.params.id;
 	Room.findByPk(id)
 	  .then(data => {
 		if(data){
 			// res.send(data);
-			res.send({
-				message:responseMessages.messages.FIND_ROOM.SUCCESS,
-				data
-			});
+			// res.send({
+			// 	message:responseMessages.messages.FIND_ROOM.SUCCESS,
+			// 	data
+			// });
+			res.render('findSingleRoom', { title:"Get Single data from databse", message:responseMessages.messages.FIND_ROOM.SUCCESS, data});
 			console.log("data is:",data);
+		}else{
+			// res.send(`Data not found with id = ${id}`)
+		    res.status(404).send({message:responseMessages.messages.DATA_NOT_FOUND})
 		}  
-		// res.send(`Data not found with id = ${id}`)
-		res.send({message:responseMessages.messages.DATA_NOT_FOUND})
 	  })
 	  .catch(err => {
 		res.status(500).send({
@@ -113,20 +116,20 @@ exports.findOne = (req, res) => {
 
 // Update a Room by the id in the request
 exports.update = (req, res) => {
-
 	// const id = req.params.id;
-	const id = req.params.id;
-
+	const id = req.body.id;
+    console.log('id:'+id);
 	Room.update(req.body, {
 	  where: { id: id }
 	})
 	  .then(num => {
-		if (num == 1) {
+		if (num) {
 		  console.log(num);	
 		  res.send({
 			message: responseMessages.messages.UPDATE_ROOM.SUCCESS,
 		  });
-		} else {
+		} 
+		else {
 		  res.send({
 			message: responseMessages.messages.UPDATE_ROOM.FAILED
 		  });
@@ -140,8 +143,6 @@ exports.update = (req, res) => {
 	  });
 };
 
- 
-  
 // Delete a Room with the specified id in the request
 exports.delete = (req, res) => {
 		const id = req.params.id;
@@ -170,3 +171,27 @@ exports.delete = (req, res) => {
 		  });
 };  
 
+// Find a single Tutorial with an id
+exports.findOneForUpdate = (req, res) => {
+    const id = req.params.id;
+	Room.findByPk(id)
+	  .then(data => {
+		if(data){
+			// res.send(data);
+			// res.send({
+			// 	message:responseMessages.messages.FIND_ROOM.SUCCESS,
+			// 	data
+			// });
+			res.render('editRoom', { title:"Get Single data by id from databse", message:responseMessages.messages.FIND_ROOM.SUCCESS, data});
+			console.log("data is:",data);
+		}else{
+			res.status(404).send({message:responseMessages.messages.DATA_NOT_FOUND});
+		}
+	  })
+	  .catch(err => {
+		res.status(500).send({
+		  message: responseMessages.messages.FIND_ROOM.FAILED
+		});
+	  });
+
+  };
