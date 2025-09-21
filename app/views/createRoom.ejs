@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title><%= title %></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+      <div class="container">
+      <h2>Create Room By Admin</h2>
+      <form action="/api/saveNewCreatedRoom" method="post">
+         <div class="form-group">
+            <label for="room_number">Room Number:</label>
+            <input type="text" class="form-control" id="room_number" placeholder="Enter Room Number" name="room_number" required>
+         </div>
+         <div class="form-group">
+            <label for="room_type">Room Type:</label>
+            <input type="text" class="form-control" id="room_type" placeholder="Enter Room Type" name="room_type" required>
+         </div>
+         <div class="form-group">
+            <label for="room_status">Room Status:</label>
+            <input type="text" class="form-control" id="room_status" placeholder="Enter Room Status" name="room_status" required>
+         </div>
+         <div class="form-group">
+            <label for="room_price">Room Price:</label>
+            <input type="text" class="form-control" id="room_price" placeholder="Enter Room Price" name="room_price" required>
+         </div>
+         <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+         </div>   
+      </form>
+      </div>
+</body>
+</html>
